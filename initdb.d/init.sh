@@ -1,0 +1,2 @@
+mongoimport --db blue_deploy --collection now_db --drop --file /docker-entrypoint-initdb.d/now_db.json
+mongoimport --db blue_deploy --collection check_info --drop --file /docker-entrypoint-initdb.d/check_info.json

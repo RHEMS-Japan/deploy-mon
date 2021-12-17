@@ -1,0 +1,2 @@
+{"_id":{"$oid":"111111111111111111111111"},"name":"update_info","now_db":"deploy_info","timestamp":{"$date":"2021-01-01T00:00:00.000Z"}}
+{"_id":{"$oid":"222222222222222222222222"},"name":"check_info","now_db":"check_info","timestamp":{"$date":"2021-01-01T00:00:00.000Z"}}

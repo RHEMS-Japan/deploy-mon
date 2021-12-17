@@ -1,24 +1,5 @@
 version: "3"
 services:
-  check-mon:
-    container_name: check-mon
-    image: rhemsjapan/blue-deploy-mon:api-latest
-    restart: always
-    ports:
-      - 5000:5000
-    environment:
-      MOGODB_HOST: mongodb
-      MOGODB_PORT: 27017
-
-  dashboard:
-    container_name: dashboard
-    image: rhemsjapan/blue-deploy-mon:admin-latest
-    restart: always
-    ports:
-      - 3000:3000
-    environment:
-      API_URL: http://check-mon:5000   
-
   mongodb:
     container_name: mongodb
     image: mongo:latest
@@ -29,7 +10,35 @@ services:
     - "mongod"
     - "--bind_ip_all"
     environment:
-      MONGO_INITDB_DATABASE: admin
+      MONGO_INITDB_DATABASE: blue_deploy
+    volumes:
+      - ./initdb.d:/docker-entrypoint-initdb.d
+      
+
+  check-mon:
+    container_name: check-mon
+    image: rhemsjapan/blue-deploy-mon:api-latest
+    restart: always
+    ports:
+      - 5000:5000
+    environment:
+      MOGODB_HOST: mongodb
+      MOGODB_PORT: 27017
+    depends_on:
+      - mongodb
+
+  dashboard:
+    container_name: dashboard
+    image: rhemsjapan/blue-deploy-mon:admin-latest
+    restart: always
+    ports:
+      - 3000:3000
+    environment:
+      API_URL: http://check-mon:5000   
+    depends_on:
+      - check-mon
+
+
 
 
 
