@@ -34,6 +34,15 @@ CONTAINER ID   IMAGE                                     COMMAND                
 (⎈ |docker-desktop:default)
 ```
 
+
+## Login to the dashbord container
+
+- sample command
+```
+docker exec -it 463ecaa1c2ee  sh
+```
+
+
 ## Install the curl command
 
 - command
@@ -42,12 +51,7 @@ apk add curl
 ```
 
 
-## Login to the dashbord container
 
-- sample command
-```
-docker exec -it 463ecaa1c2ee  sh
-```
 
 
 
