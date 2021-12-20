@@ -65,6 +65,14 @@ http://0.0.0.0:3000/
 - Use sample ymls in [k8s_sample](https://github.com/RHEMS-Japan/deploy-mon/tree/main/k8s_sample).
 - Add value that the path where [initdb.d](https://github.com/RHEMS-Japan/deploy-mon/tree/main/k8s_sample/initdb.d) is located in [mongodb.yml#L42](https://github.com/RHEMS-Japan/deploy-mon/blob/main/k8s_sample/mongodb.yml#L42/).
 
+  - sample
+```
+      volumes:
+        - name: initdb
+          hostPath:
+            path: /Users/tom/deploy-mon/k8s_sample/initdb.d
+```
+
 ### Run containers using kubectl
 
 - Run it in the directory where you created [ymls](https://github.com/RHEMS-Japan/deploy-mon#create_ymls).
@@ -91,10 +99,10 @@ deployment.apps/mongodb created
 ```
 ```
 (⎈ |docker-desktop:blue-deploy-check)kubectl get pod
-NAME                         READY   STATUS              RESTARTS   AGE
-check-6f46c9b5b9-28xnp       0/1     ContainerCreating   0          4s
-dashboard-59579f8d76-86qp6   0/1     ContainerCreating   0          4s
-mongodb-774cd5f658-gsspq     0/1     ContainerCreating   0          4s
+NAME                         READY   STATUS    RESTARTS   AGE
+check-6f46c9b5b9-28xnp       1/1     Running   0          11s
+dashboard-59579f8d76-86qp6   1/1     Running   0          11s
+mongodb-774cd5f658-gsspq     1/1     Running   0          11s
 (⎈ |docker-desktop:blue-deploy-check)
 ```
 ### Check the target port for dashbord
