@@ -39,7 +39,7 @@ spec:
       volumes:
         - name: initdb
           hostPath:
-            path: /Users/miwakooe/deploy-mon/initdb.d
+            path: 
 
 
 

@@ -121,4 +121,4 @@ http://0.0.0.0: [<target_port_for_dashbord>](https://github.com/RHEMS-Japan/depl
 
 - sample image
 
-![sample image](https://github.com/RHEMS-Japan/deploy-mon/blob/main/img/sample_image.png)
+![sample image](https://github.com/RHEMS-Japan/deploy-mon/blob/main/img/sample_image2.png)
