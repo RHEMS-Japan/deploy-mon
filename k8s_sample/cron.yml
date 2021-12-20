@@ -1,0 +1,47 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: check-version
+  labels:
+    app: check-version
+spec:
+  #### every 5min
+  schedule: "*/5 * * * *"
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+            - name: manbou-batch
+              image: rhemsjapan/batch-curl:latest
+              imagePullPolicy: IfNotPresent
+              command: [ "curl" ]
+              args: [ "http://api-svc.blue-deploy-check.svc.cluster.local:5000/check_version" ]
+          restartPolicy: Never
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: update-info
+  labels:
+    app: update-info
+spec:
+  #### every 5min
+  schedule: "*/5 * * * *"
+  failedJobsHistoryLimit: 3
+  successfulJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          containers:
+            - name: manbou-batch
+              image: rhemsjapan/batch-curl:latest
+              imagePullPolicy: IfNotPresent
+              command: [ "curl" ]
+              args: [ "-X", "POST","http://api-svc.blue-deploy-check.svc.cluster.local:5000/update_info" ]
+          restartPolicy: Never

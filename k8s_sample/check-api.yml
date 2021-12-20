@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: check
+  labels:
+    app: check
+spec:
+  selector:
+    matchLabels:
+      app: check
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: check
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+    spec:
+      serviceAccount: admin-deploy-checker
+      containers:
+        - name: check-mon
+          image: rhemsjapan/blue-deploy-mon:api-latest
+          ports:
+            - containerPort: 5000
+          env:
+            - name: MOGODB_HOST
+              value: "mongo-svc.blue-deploy-check.svc.cluster.local"
+            - name: MOGODB_PORT
+              value: "27017"
+

@@ -1,0 +1,10 @@
+namespace: blue-deploy-check
+resources:
+#### deploy licence
+- check-api.yml
+- dashboard.yml
+- clusterrolebinding.yml
+- serviceaccount.yml
+- svc.yml
+- namespace.yml
+- mongodb.yml

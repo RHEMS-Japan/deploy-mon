@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  labels:
+    app: dashboard
+spec:
+  selector:
+    matchLabels:
+      app: dashboard
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 0
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: dashboard
+      annotations:
+        cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+    spec:
+      # serviceAccount: admin-deploy-checker
+      containers:
+        - name: check-mon
+          image: rhemsjapan/blue-deploy-mon:admin-latest
+          # command: [ "sleep" ]
+          # args: [ "infinity" ]
+          ports:
+            - containerPort: 3000

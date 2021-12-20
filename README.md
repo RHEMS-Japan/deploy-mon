@@ -1,11 +1,13 @@
-# Requirement
+# deploy-mon for Docker Compose
+
+## Requirement
 
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
 - [Docker Compose](https://docs.docker.com/compose/install/)
 
-# Usage
+## Usage
 
-## Run containers using docker-compose
+### Run containers using docker-compose
 
 - [docker-compose.yml](https://github.com/RHEMS-Japan/deploy-mon/blob/main/docker-compose.yml)
 
@@ -35,78 +37,87 @@ CONTAINER ID   IMAGE                                     COMMAND                
 ```
 
 
-## Login to the dashbord container
-
-- sample command
-```
-docker exec -it 463ecaa1c2ee  sh
-```
-
-
-## Install the curl command
-
-- command
-```
-apk add curl
-```
-
-
-
-
-
-
-
-## Send a POST request to api-update-info
-
-- command
-```
-curl -X POST http://check-mon:5000/api-update-info
-```
-
-- sample result
-```
-/app # curl -X POST http://check-mon:5000/api-update-info
-[]
-/app #
-```
-
-
-## Send a GET request to api-check-version
-
-
-- command
-```
-curl http://check-mon:5000/api-check-version
-```
-
-- sample result
-```
-/app # curl http://check-mon:5000/api-check-version
-{'insert get_check_version'}
-/app #
-```
-
-
-## Send a GET request to api-baseinfo
-
-- command
-```
-curl http://check-mon:5000/api-baseinfo
-```
-
-- sample result
-```
-/app # curl http://check-mon:5000/api-baseinfo
-{"all_apps":0,"all_host":0,"last_update":"2021-12-16 18:55:39.385000"}
-/app #
-```
-
-## Access the following URL in your browser
+### Access the following URL in your browser
 
 - URL
-```
+
 http://0.0.0.0:3000/
+
+
+- sample image
+
+![sample image](https://github.com/RHEMS-Japan/deploy-mon/blob/main/img/sample_image.png)
+
+
+# deploy-mon for k8s
+
+## Requirement
+
+
+- [Docker Desktop](https://www.docker.com/products/docker-desktop) 
+- [kubectl](https://kubernetes.io/docs/tasks/tools/)
+
+## Usage
+
+
+### Create ymls 
+
+- Use sample ymls in [k8s_sample](https://github.com/RHEMS-Japan/deploy-mon/tree/main/k8s_sample).
+- Add value that the path where [initdb.d](https://github.com/RHEMS-Japan/deploy-mon/tree/main/k8s_sample/initdb.d) is located in [mongodb.yml#L42](https://github.com/RHEMS-Japan/deploy-mon/blob/main/k8s_sample/mongodb.yml#L42/).
+
+### Run containers using kubectl
+
+- Run it in the directory where you created [ymls](https://github.com/RHEMS-Japan/deploy-mon#create_ymls).
+
+
+- command
 ```
+kubectl apply -k .
+```
+
+- sample
+```
+(⎈ |docker-desktop:blue-deploy-check)kubectl apply -k .
+namespace/blue-deploy-check created
+serviceaccount/admin-deploy-checker created
+clusterrolebinding.rbac.authorization.k8s.io/admin-clusterrolebinding-deploy-checker created
+service/api-svc created
+service/dashboard-svc created
+service/mongo-svc created
+deployment.apps/check created
+deployment.apps/dashboard created
+deployment.apps/mongodb created
+(⎈ |docker-desktop:blue-deploy-check)
+```
+```
+(⎈ |docker-desktop:blue-deploy-check)kubectl get pod
+NAME                         READY   STATUS              RESTARTS   AGE
+check-6f46c9b5b9-28xnp       0/1     ContainerCreating   0          4s
+dashboard-59579f8d76-86qp6   0/1     ContainerCreating   0          4s
+mongodb-774cd5f658-gsspq     0/1     ContainerCreating   0          4s
+(⎈ |docker-desktop:blue-deploy-check)
+```
+### Check the target port for dashbord
+
+- command
+```
+kubectl get svc dashboard-svc
+```
+
+- sample
+```
+(⎈ |docker-desktop:blue-deploy-check)kubectl get svc dashboard-svc
+NAME            TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)          AGE
+dashboard-svc   NodePort   10.109.49.219   <none>        3000:31131/TCP   25m
+(⎈ |docker-desktop:blue-deploy-check)
+```
+(In this case, the target port for dashbord is 31131.)
+
+### Access the following URL in your browser
+
+- URL
+
+http://0.0.0.0: [<target_port_for_dashbord>](https://github.com/RHEMS-Japan/deploy-mon#check_the_target_port_for_dashbord) /
 
 - sample image
 
